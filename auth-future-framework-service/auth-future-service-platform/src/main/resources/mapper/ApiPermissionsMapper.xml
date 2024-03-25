@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="auth.future.service.platform.mapper.ApiPermissionsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="auth.future.service.platform.entity.ApiPermissions">
+        <id column="F_ID" property="id" />
+        <result column="F_CREATE_BY" property="createBy" />
+        <result column="F_CREATE_TIME" property="createTime" />
+        <result column="F_UPDATE_BY" property="updateBy" />
+        <result column="F_UPDATE_TIME" property="updateTime" />
+        <result column="F_API_ID" property="apiId" />
+        <result column="F_ROLE_ID" property="roleId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        F_ID, F_CREATE_BY, F_CREATE_TIME, F_UPDATE_BY, F_UPDATE_TIME, F_API_ID, F_ROLE_ID
+    </sql>
+
+</mapper>

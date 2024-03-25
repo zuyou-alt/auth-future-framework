@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="auth.future.service.platform.mapper.MenuInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="auth.future.service.platform.entity.MenuInfo">
+        <id column="F_ID" property="id" />
+        <result column="F_CREATE_BY" property="createBy" />
+        <result column="F_CREATE_TIME" property="createTime" />
+        <result column="F_UPDATE_BY" property="updateBy" />
+        <result column="F_UPDATE_TIME" property="updateTime" />
+        <result column="F_MENU_NAME" property="menuName" />
+        <result column="F_MENU_CODE" property="menuCode" />
+        <result column="F_MENU_TYPE" property="menuType" />
+        <result column="F_MENU_ICON" property="menuIcon" />
+        <result column="F_MENU_URL" property="menuUrl" />
+        <result column="F_MENU_COMPONENT" property="menuComponent" />
+        <result column="F_MENU_SHOW" property="menuShow" />
+        <result column="F_MENU_STATUS" property="menuStatus" />
+        <result column="F_MENU_SORT" property="menuSort" />
+        <result column="F_MENU_PARENT_ID" property="menuParentId" />
+        <result column="F_MENU_OUTSIDE" property="menuOutside" />
+        <result column="F_MENU_AUTH" property="menuAuth" />
+        <result column="F_MENU_IDENTITY" property="menuIdentity" />
+        <result column="F_PATH" property="path" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        F_CREATE_BY,
+        F_CREATE_TIME,
+        F_UPDATE_BY,
+        F_UPDATE_TIME,
+        F_ID, F_MENU_NAME, F_MENU_CODE, F_MENU_TYPE, F_MENU_ICON, F_MENU_URL, F_MENU_COMPONENT, F_MENU_SHOW, F_MENU_STATUS, F_MENU_SORT, F_MENU_PARENT_ID, F_MENU_OUTSIDE, F_MENU_AUTH, F_MENU_IDENTITY, F_PATH
+    </sql>
+
+</mapper>

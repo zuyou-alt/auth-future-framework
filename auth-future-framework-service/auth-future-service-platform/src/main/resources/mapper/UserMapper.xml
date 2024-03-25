@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="auth.future.service.platform.mapper.UserMapper">
+
+    <resultMap id="UserMap" type="auth.future.component.common.model.auth.UserVo">
+        <id column="F_ID" property="id" />
+        <result column="F_ACCOUNT" property="account"/>
+        <result column="F_PASSWORD" property="password"/>
+        <result column="F_SALT" property="salt"/>
+        <result column="F_NAME" property="name"/>
+        <result column="F_PHONE" property="phone"/>
+        <result column="F_EMAIL" property="email"/>
+        <result column="F_ID_CARD" property="idCard"/>
+        <result column="F_NICK_NAME" property="nickName"/>
+        <result column="F_HEAD_PORTRAIT" property="headPortrait"/>
+        <result column="F_GENDER" property="gender"/>
+        <result column="F_BIRTHDAY" property="birthday"/>
+        <result column="F_REGION" property="region"/>
+        <result column="F_ADDRESS" property="address"/>
+        <result column="F_JOB" property="job"/>
+        <result column="F_USER_RANK" property="userRank"/>
+        <result column="F_INTRO" property="userSort"/>
+        <result column="F_SOURCE_TO" property="sourceTo"/>
+        <result column="F_STATUS" property="status"/>
+        <result column="F_AUDIT_STATUS" property="auditStatus"/>
+        <result column="F_IDENTITY" property="identity"/>
+        <result column="F_LOGIN_FLAG" property="loginFlag"/>
+        <result column="F_USER_SORT" property="userSort"/>
+        <result column="F_CREATE_BY" property="createBy"/>
+        <result column="F_CREATE_TIME" property="createTime"/>
+        <result column="F_UPDATE_BY" property="updateBy"/>
+        <result column="F_UPDATE_TIME" property="updateTime"/>
+        <result column="F_TYPE" property="relevancyOrgType"/>
+        <result column="F_ORG_ID" property="relevancyOrgId"/>
+    </resultMap>
+
+
+    <select id="pageUserList" parameterType="auth.future.api.platform.model.request.RequestUserPage" resultMap="UserMap">
+        SELECT A.*,B.F_TYPE,B.F_ORG_ID FROM t_user A JOIN t_user_org B ON A.F_ID = B.F_USER_ID WHERE 1=1
+        <if test="requestUserPage.relevancyOrgId!=null and requestUserPage.relevancyOrgId!= '' ">
+            AND B.F_ORG_ID = #{requestUserPage.relevancyOrgId}
+        </if>
+        <if test="requestUserPage.account!=null and requestUserPage.account!= '' ">
+            AND A.F_ACCOUNT LIKE concat('%',#{requestUserPage.account},'%')
+        </if>
+        <if test="requestUserPage.eqAccount!=null and requestUserPage.eqAccount!= '' ">
+            AND A.F_ACCOUNT = #{requestUserPage.eqAccount}
+        </if>
+        <if test="requestUserPage.name!=null and requestUserPage.name!= '' ">
+            AND A.F_NAME LIKE concat('%',#{requestUserPage.name},'%')
+        </if>
+        <if test="requestUserPage.eqName!=null and requestUserPage.eqName!= '' ">
+            AND A.F_NAME = #{requestUserPage.eqName}
+        </if>
+        <if test="requestUserPage.phone!=null and requestUserPage.phone!= '' ">
+            AND A.F_PHONE LIKE concat('%',#{requestUserPage.phone},'%')
+        </if>
+        <if test="requestUserPage.eqPhone!=null and requestUserPage.eqPhone!= '' ">
+            AND A.F_PHONE = #{requestUserPage.eqPhone}
+        </if>
+        <if test="requestUserPage.email!=null and requestUserPage.email!= '' ">
+            AND A.F_EMAIL LIKE concat('%',#{requestUserPage.email},'%')
+        </if>
+        <if test="requestUserPage.eqEmail!=null and requestUserPage.eqEmail!= '' ">
+            AND A.F_EMAIL = #{requestUserPage.eqEmail}
+        </if>
+        <if test="requestUserPage.nickName!=null and requestUserPage.nickName!= '' ">
+            AND A.F_NICK_NAME LIKE concat('%',#{requestUserPage.nickName},'%')
+        </if>
+        <if test="requestUserPage.eqNickName!=null and requestUserPage.eqNickName!= '' ">
+            AND A.F_NICK_NAME  = #{requestUserPage.eqNickName}
+        </if>
+        <if test="requestUserPage.idCard!=null and requestUserPage.idCard!= '' ">
+            AND A.F_ID_CARD LIKE concat('%',#{requestUserPage.idCard},'%')
+        </if>
+        <if test="requestUserPage.status!=null and requestUserPage.status!= '' ">
+            AND A.F_STATUS = #{requestUserPage.status}
+        </if>
+        <if test="requestUserPage.auditStatus!=null and requestUserPage.auditStatus!= '' ">
+            AND A.F_AUDIT_STATUS = #{requestUserPage.auditStatus}
+        </if>
+        <if test="requestUserPage.identity!=null and requestUserPage.identity!= '' ">
+            AND A.F_IDENTITY = #{requestUserPage.identity}
+        </if>
+        <if test="requestUserPage.sourceTo!=null and requestUserPage.sourceTo!= '' ">
+            AND A.F_SOURCE_TO = #{requestUserPage.sourceTo}
+        </if>
+        order by A.F_USER_SORT,F_JOB,F_USER_RANK
+    </select>
+
+
+    <select id="getUserListAllByOrgId" resultMap="UserMap">
+        SELECT A.*,B.F_TYPE,B.F_ORG_ID FROM t_user A JOIN t_user_org B ON A.F_ID = B.F_USER_ID WHERE B.F_ORG_ID = #{orgId}
+    </select>
+
+    <select id="countUserListAllByOrgId" resultType="Long">
+        SELECT count(1) FROM t_user A JOIN t_user_org B ON A.F_ID = B.F_USER_ID WHERE B.F_ORG_ID = #{orgId}
+    </select>
+
+    <select id="getUserListByOrgId" resultMap="UserMap">
+        SELECT * FROM t_user A JOIN t_user_org B ON A.F_ID = B.F_USER_ID WHERE B.F_ORG_ID = #{orgId} AND A.F_STATUS=#{status} AND A.F_AUDIT_STATUS=#{auditStatus}
+    </select>
+
+</mapper>

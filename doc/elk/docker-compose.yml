@@ -1,0 +1,58 @@
+version: "2"
+
+services:
+  elasticsearch:
+    image: elasticsearch:7.10.1
+    restart: always
+    privileged: true
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - /usr/elklog/elk/es/data:/usr/share/elasticsearch/data
+    environment:
+      - discovery.type=single-node
+    networks:
+      - es_default
+  kibana:
+    image: kibana:7.10.1
+    restart: always
+    privileged: true
+    ports:
+      - "5601:5601"
+    environment:
+      - ELASTICSEARCH_URL=http://192.168.0.37:9200
+    depends_on:
+      - elasticsearch
+    networks:
+      - es_default
+  metricbeat:
+    image: elastic/metricbeat:7.10.1
+    restart: always
+    user: root
+    environment:
+      - ELASTICSEARCH_HOSTS=http://192.168.0.37:9200
+    depends_on:
+      - elasticsearch
+      - kibana
+    command:  -E setup.kibana.host="192.168.0.37:5601" -E setup.dashboards.enabled=true -E setup.template.overwrite=false -E output.elasticsearch.hosts=["192.168.0.37:9200"] -E setup.ilm.overwrite=true
+    networks:
+      - es_default
+  logstash:
+    image: elastic/logstash:7.10.1
+    restart: always
+    user: root
+    volumes:
+      - /usr/elklog/elk/logstash/pipeline:/usr/share/logstash/pipeline/  
+    depends_on:
+      - elasticsearch
+      - kibana
+    networks:
+      - es_default
+networks:
+  es_default:
+    driver: bridge
+    name: es_default
+
+
+

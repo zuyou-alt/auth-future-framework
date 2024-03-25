@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="auth.future.service.platform.mapper.AreaInfo5Mapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="auth.future.service.platform.entity.AreaInfo5">
+        <result column="province_Code" property="provinceCode" />
+        <result column="province_name" property="provinceName" />
+        <result column="city_Code" property="cityCode" />
+        <result column="city_name" property="cityName" />
+        <result column="area_Code" property="areaCode" />
+        <result column="area_name" property="areaName" />
+        <result column="street_Code" property="streetCode" />
+        <result column="street_name" property="streetName" />
+        <result column="village_code" property="villageCode" />
+        <result column="village_name" property="villageName" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        province_Code, province_name, city_Code, city_name, area_Code, area_name, street_Code, street_name, village_code, village_name
+    </sql>
+
+</mapper>

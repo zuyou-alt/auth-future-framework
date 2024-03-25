@@ -1,0 +1,15 @@
+package auth.future.service.platform.mapper;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
+import auth.future.service.platform.entity.DictType;
+
+/**
+ * 字典分类表 Mapper 接口
+ * @author Hzy
+ * @since 2023-08-09
+ */
+@Mapper
+public interface DictTypeMapper extends BaseMapper<DictType> {
+
+}

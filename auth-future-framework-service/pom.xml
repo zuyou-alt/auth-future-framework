@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>auth.future.framework</groupId>
+        <artifactId>auth-future-framework</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <artifactId>auth-future-framework-service</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>auth-future-service-message</module>
+        <module>auth-future-service-tag</module>
+        <module>auth-future-service-configcenter</module>
+        <module>auth-future-service-captcha</module>
+        <module>auth-future-service-log</module>
+        <module>auth-future-service-generate</module>
+        <module>auth-future-service-platform</module>
+        <module>auth-future-service-permission</module>
+        <module>auth-future-service-monitor</module>
+        <module>auth-future-service-file</module>
+        <module>auth-future-service-websocket</module>
+    </modules>
+
+    <version>1.0.0</version>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+</project>

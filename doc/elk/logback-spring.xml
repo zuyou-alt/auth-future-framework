@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds">
+
+    <logger name="com.elk" level="info"/>
+
+    <!-- 关闭logback启动时候的一大堆输出-->
+    <statusListener class="ch.qos.logback.core.status.NopStatusListener" />
+
+    <!-- 定义日志文件 输入位置 -->
+    <property name="logPath" value="logs" />
+
+    <!-- 第一步: 引入spring boot默认的logback配置文件 -->
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <!-- 控制台输出日志 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <!-- 第二步：设置控制套输出日志格式为第一步中引入的默认的格式 -->
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset class="java.nio.charset.Charset">UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- INFO日志文件 -->
+    <appender name="infoAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 文件名称 -->
+            <fileNamePattern>${logPath}\%d{yyyyMMdd}\info.log</fileNamePattern>
+            <!-- 文件最大保存历史天数 -->
+            <MaxHistory>30</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+            <charset class="java.nio.charset.Charset">UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- DEBUG日志文件 -->
+    <appender name="debugAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 文件名称 -->
+            <fileNamePattern>${logPath}\%d{yyyyMMdd}\debug.log</fileNamePattern>
+            <!-- 文件最大保存历史天数 -->
+            <MaxHistory>30</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+            <charset class="java.nio.charset.Charset">UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- WARN日志文件 -->
+    <appender name="warnAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>WARN</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 文件名称 -->
+            <fileNamePattern>${logPath}\%d{yyyyMMdd}\warn.log</fileNamePattern>
+            <!-- 文件最大保存历史天数 -->
+            <MaxHistory>30</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+            <charset class="java.nio.charset.Charset">UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- ERROR日志文件 -->
+    <appender name="errorAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 文件名称 -->
+            <fileNamePattern>${logPath}\%d{yyyyMMdd}\error.log</fileNamePattern>
+            <!-- 文件最大保存历史天数 -->
+            <MaxHistory>30</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+            <charset class="java.nio.charset.Charset">UTF-8</charset>
+        </encoder>
+    </appender>
+
+
+    <!--  往kafka推送日志  -->
+    <appender name="kafkaAppender" class="auth.future.component.session.elk.KafkaAppender">
+        <!-- kafka地址 -->
+        <bootstrapServers>192.168.0.36:39193,192.168.0.36:39194,192.168.0.36:39195</bootstrapServers>
+        <!-- 配置topic -->
+        <topic>demoCoreKafkaLog</topic>
+        <!-- encoder负责两件事，一是将一个event事件转换成一组byte数组，二是将转换后的字节数据输出到文件中 -->
+        <encoder>
+            <pattern>${HOSTNAME} %date [%thread] %level %logger{36} [%file : %line] %msg%n</pattern>
+            <charset>utf8</charset>
+        </encoder>
+        <!-- layout主要的功能就是：将一个event事件转化为一个String字符串 -->
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>${HOSTNAME} %date [%thread] %level %logger{36} [%file : %line] %msg%n</pattern>
+        </layout>
+    </appender>
+
+    <!--  指定这个包的日志级别为error  -->
+    <logger name="org.springframework" additivity="false">
+        <level value="ERROR" />
+        <appender-ref ref="errorAppender" />
+    </logger>
+
+    <!-- 由于启动的时候，以下两个包下打印debug级别日志很多 ，所以调到ERROR-->
+    <!--  指定这个包的日志级别为error  -->
+    <logger name="org.apache.tomcat.util" additivity="false">
+        <level value="ERROR"/>
+        <appender-ref ref="errorAppender"/>
+    </logger>
+
+    <!-- 默认spring boot导入hibernate很多的依赖包，启动的时候，会有hibernate相关的内容，直接去除 -->
+    <!--  指定这个包的日志级别为error  -->
+    <logger name="org.hibernate.validator" additivity="false">
+        <level value="ERROR"/>
+        <appender-ref ref="errorAppender"/>
+    </logger>
+
+    <!--  监控所有包，日志输入到以下位置，并设置日志级别  -->
+    <root level="WARN">
+        <!--输入到控制台-->
+        <appender-ref ref="STDOUT"/>
+        <!--INFO 级别的日志输入到文件-->
+        <appender-ref ref="infoAppender"/>
+        <!--DEBUG 级别的日志输入到文件-->
+        <appender-ref ref="debugAppender"/>
+        <!--WARN 级别的日志输入到文件-->
+        <appender-ref ref="warnAppender"/>
+        <!--ERROR 级别的日志输入到文件-->
+        <appender-ref ref="errorAppender"/>
+        <!-- 日志集成ELK框架 ，将日志发送到kafka中 -->
+        <appender-ref ref="kafkaAppender"/>
+    </root>
+</configuration>
+
